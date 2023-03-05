@@ -142,3 +142,5 @@ git clone https://github.com/LittleFennel/MyHistoryOfProgress.git
 		excluedesfile = C:/Users/hayashi/git.ignore
 	# 这里不能用反斜线
 	```
+ 
+
