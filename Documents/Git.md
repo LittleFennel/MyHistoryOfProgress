@@ -63,3 +63,82 @@ git remote -v
 ```shell
 git push MyHistoryOfProgress master
 ```
+
+## 拉取远程库到本地库
+
+```shell
+git pull MyHistoryOfProgress master
+```
+
+## 克隆远程仓库到本地
+
+```shell
+git clone https://github.com/LittleFennel/MyHistoryOfProgress.git 
+```
+
+## SSH免密登录
+
+1. 在`C:\Users\user`目录下右键`git bash`生成`.ssh`密钥目录
+
+	```shell
+	ssh-keygen -t rsa -C kobayashisora@yeah.net
+	```
+
+	然后敲三次回车
+
+2. 将`.ssh`文件夹中的`id_rsa.pub`密钥复制进GitHub的ssh连接中
+
+# IDEA集成Git
+
+## 配置Git忽略文件
+
+1. 创建忽略规则文件`xxxx.ignore`（前缀名随便起，建议是git.ignore）
+
+	这个文件的存放位置原则上哪里都可以，为了便于让~/.gitignore文件引用，建议也放在用户家目录下
+
+	git.ignore文件模板内容如下
+
+	```shell
+	# Compile class File
+	*.class
+	
+	# Log File
+	.log
+	
+	# BlueJ Files
+	.ctxt
+	
+	# Mobile Tools for Java (J2ME)
+	.mjt.tmp/
+	
+	# Package Files
+	*.jar
+	*.war
+	*.nar
+	*.ear
+	*.zip
+	*.tar.gz
+	*.rar
+	
+	# Virtual Machine crash logs
+	https://www.java.com/en/download/help/error_hotspot.xml
+	hs_err_pid*
+	
+	.classpath
+	.project
+	.settings
+	target
+	*.idea
+	*.iml
+	```
+
+2. 在.gitconfig文件中引用忽略配置文件（此文件在Windows的家目录下）
+
+	```shell
+	[user]
+		name = hayashi
+		email = kobayashisama@yeah.net
+	[core]
+		excluedesfile = C:/Users/hayashi/git.ignore
+	# 这里不能用反斜线
+	```
