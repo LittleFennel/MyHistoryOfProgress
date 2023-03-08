@@ -80,11 +80,62 @@
 	    
 	    @After("pointCut()")
 	    public void afterMethod(JoinPoint joinPoint) {
-	        String methodName = joinPoint.getSinature().getName();
-	        String args = Arrays.toString(joinPoint.getArgs());
+	        Signature signature = jointPoint.getSignature();
+	        System.out.println("LoggerAspect, 方法：" + signature.getName() + ",执行完毕");
 	    }
 	    
+	    /**
+	    * 在返回通知中若要获取目标对象方法的返回值
+	    * 只需要通过@AfterRunning注解的returning属性姐可以将通知方法的某个参数指定为接收目标对象方法的返回值的参数
+	    **/
+	    @AfterRunning(value = "pointCut()", returning = "result")
+	    public void afterReturningAdviceMethod(JoinPoint joinPoint, Object result) {
+	        Signature signature = jointPoint.getSignature();
+	        System.out.println("LoggerAspect, 方法：" + signature.getName() + ",结果：" + result);
+	    }
+	    
+	    @AfterThrowing(value = "pointCut()", throwing = "exception")
+	    public void afterThrowingAdviceMethod(JoinPoint joinPoint, Throwable exception) {
+	        Signature signature = jointPoint.getSignature();
+	        System.out.println("LoggerAspect, 方法：" + signature.getName() + ", 异常:" + exception);
+	    }
+	    
+	    @Around("pointCut()")
+	    public Object aroundAdviceMethod(ProceedingJoinPoint joinPoint) {
+	        Object result = null;
+	        try {
+	            System.out.println("环绕通知 --> 前置通知");
+	            result = joinPoint.proceed; // 表示目标对象方法的执行
+	            System.out.println("环绕通知 --> 返回通知");
+	        } catch (Throwable throwable) {
+	            throwable.printStackTree();
+	            System.out.println("环绕通知 --> 异常通知");
+	        } finally {
+	            System.out.println("环绕通知 --> 后置通知");
+	        }
+	    }
 	}
+	```
+	
+
+# 基于注解的声明式事务
+
+1. 加入依赖
+
+	```xml
+	<dependencies>
+	    <dependency>
+	        <groupId>org.springframework</groupId>
+	    	<artifactId>spring-context</artifactId>
+	    	<version>5.3.1</version>
+	    </dependency>
+	    
+	    <dependency>
+	        <groupId>org.springframework</groupId>
+	    	<artifactId>spring-context</artifactId>
+	    	<version>5.3.1</version>
+	    </dependency>
+	</dependencies>
 	```
 
 	
