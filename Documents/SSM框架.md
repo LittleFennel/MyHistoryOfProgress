@@ -407,3 +407,49 @@
 @Transaction(isolation = Isolation.REPEATABLE_READ) // 可重复读
 @Transaction(isolation = Isolation.SERIALIZABLE) // 串行化
 ```
+
+# SpringMVC入门案例
+
+## 创建maven工程
+
+1. 添加web模块
+
+2. 打包方式为war
+
+3. 引入依赖
+
+	```xml
+	<dependencies>
+	    <!-- SpringMVC -->
+		<dependency>
+	    	<groupId>org.springframework</groupId>
+	        <artifactId>spring-webmvc</artifactId>
+	        <version>5.3.1</version>
+	    </dependency>
+	    
+	    <!-- 日志 -->
+	    <dependency>
+	    	<groupId>ch.qos.logback</groupId>
+	        <artifactId>logback-classic</artifactId>
+	        <version>1.2.3</version>
+	    </dependency>
+	    
+	    <!-- ServletAPI-->
+	    <dependency>
+	    	<groupId>javax.servlet</groupId>
+	        <artifactId>javax.servlet-api</artifactId>
+	        <version>3.1.0</version>
+	        <scope>provided</scope>
+	    </dependency>
+	    
+	    <!-- Spring和Thyleaf整合包 -->
+	    <dependency>
+	    	<groupId>org.thymeleaf</groupId>
+	        <artifactId>thymeleaf-Spring5</artifactId>
+	        <version>3.1.0</version>
+	        <scope>provided</scope>
+	    </dependency>
+	</dependencies>
+	```
+
+	
