@@ -418,38 +418,110 @@
 
 3. 引入依赖
 
-	```xml
-	<dependencies>
-	    <!-- SpringMVC -->
-		<dependency>
-	    	<groupId>org.springframework</groupId>
-	        <artifactId>spring-webmvc</artifactId>
-	        <version>5.3.1</version>
-	    </dependency>
-	    
-	    <!-- 日志 -->
-	    <dependency>
-	    	<groupId>ch.qos.logback</groupId>
-	        <artifactId>logback-classic</artifactId>
-	        <version>1.2.3</version>
-	    </dependency>
-	    
-	    <!-- ServletAPI-->
-	    <dependency>
-	    	<groupId>javax.servlet</groupId>
-	        <artifactId>javax.servlet-api</artifactId>
-	        <version>3.1.0</version>
-	        <scope>provided</scope>
-	    </dependency>
-	    
-	    <!-- Spring和Thyleaf整合包 -->
-	    <dependency>
-	    	<groupId>org.thymeleaf</groupId>
-	        <artifactId>thymeleaf-Spring5</artifactId>
-	        <version>3.1.0</version>
-	        <scope>provided</scope>
-	    </dependency>
-	</dependencies>
-	```
+  ```xml
+  <dependencies>
+      <!-- SpringMVC -->
+  	<dependency>
+      	<groupId>org.springframework</groupId>
+          <artifactId>spring-webmvc</artifactId>
+          <version>5.3.1</version>
+      </dependency>
+      
+      <!-- 日志 -->
+      <dependency>
+      	<groupId>ch.qos.logback</groupId>
+          <artifactId>logback-classic</artifactId>
+          <version>1.2.3</version>
+      </dependency>
+      
+      <!-- ServletAPI-->
+      <dependency>
+      	<groupId>javax.servlet</groupId>
+          <artifactId>javax.servlet-api</artifactId>
+          <version>3.1.0</version>
+          <scope>provided</scope>
+      </dependency>
+      
+      <!-- Spring和Thymeleaf整合包 -->
+          <dependency>
+              <groupId>org.thymeleaf</groupId>
+              <artifactId>thymeleaf-spring5</artifactId>
+              <version>3.0.12.RELEASE</version>
+              <scope>provided</scope>
+          </dependency>
+  </dependencies>
+  ```
 
-	
+4. 配置web.xml
+
+  ```xml
+  <?xml version="1.0" encoding="UTF-8"?>
+  <web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+           version="4.0">
+  
+      <!--配置SpringMVC的前端控制器DispatcherServlet-->
+      <!--url-pattern中 “/” 和 “/*” 的区别
+          /：匹配浏览器向服务器发送的所有请求(不包括.jsp)
+          /*：匹配浏览器向服务器发送的所有请求(包括.jsp)
+      -->
+      <servlet>
+          <servlet-name>SpringMVC</servlet-name>
+          <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+      </servlet>
+      <servlet-mapping>
+          <servlet-name>SpringMVC</servlet-name>
+          <url-pattern>/</url-pattern>
+      </servlet-mapping>
+  </web-app>
+  ```
+
+5. 创建请求控制器
+
+  ```java
+  @Controller
+  public class HelloController {
+      
+  }
+  ```
+
+6. 创建SpringMVC的配置文件
+
+  ```xml
+  <!--扫描控制层组件-->
+  <context:component-scan base-package="com.hayashisama.controller"></context:component-scan>
+  <!--配置Thymeleaf视图解析器-->
+  <bean id="viewResolver" class="org.thymeleaf.spring5.view.ThymeleafViewResolver">
+      <property name="order" value="1"/>
+      <property name="characterEncoding" value="UTF-8"/>
+      <property name="templateEngine">
+          <bean class="org.thymeleaf.spring5.SpringTemplateEngine">
+              <property name="templateResolver">
+                  <bean class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">
+                      <!--视图前缀-->
+                      <property name="prefix" value="/WEB-INF/templates/"/>
+                      <!--视图后缀-->
+                      <property name="suffix" value=".html"/>
+                      <property name="templateMode" value="HTML5"/>
+                      <property name="characterEncoding" value="UTF-8"/>
+                  </bean>
+              </property>
+          </bean>
+      </property>
+  </bean>
+  ```
+
+7. 测试HelloWorld
+
+  - 实现对首页的访问
+
+  	在前端控制器中创建处理请求的方法
+
+  	```java
+  	@RequestMapping("/")
+  	    public String portal() {
+  	        return "index";
+  	    } 
+  	```
+
