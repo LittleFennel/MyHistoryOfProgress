@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>1.回顾Object.defineProper的方法</title>
+  <!-- 引入Vue -->
+  <script src="../js/vue.js"></script>
+</head>
+<body>
+  <script type="text/javascript">
+    let person = {
+      name: '张三',
+      sex: '男'
+    }
+
+    Object.defineProperty(person, 'age', {
+      /* value: 18,
+      enumerable: true， // 控制属性是否可以枚举，默认值是 false
+      writable: true，  // 控制属性是否可以被修改，默认值是false
+      configurable: true // 控制属性是否可以被删除，默认值是 false */
+
+      get:function() {
+        return 'hello'
+      }
+    })
+
+    console.log(person)
+  </script>
+</body>
+</html>

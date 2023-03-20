@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>2.事件修饰符</title>
+  <script src="../js/vue.js"></script>
+  <style>
+    * {
+      margin-top: 20px;
+    }
+    .demo1 {
+      height: 50px;
+      background-color: aqua;
+    }
+  </style>
+</head>
+<body>
+  <!-- 
+    Vue 中的时间修饰符
+      1. prevent 阻止默认事件（常用）
+      2. stop 阻止事件冒泡（常用）
+      3. once 事件只触发一次
+      4. capture 使用事件的捕获模式
+      5. self 只有 event.target 是当前操作的元素时触发事件
+      6. passive 事件的默认行为立即执行， 无需等待事件回调执行完毕
+   -->
+
+  <div id="root">
+    <h1>欢迎来到{{name}}学习</h1>
+    <!-- 阻止默认事件 -->
+    <a href="https://www.jd.com" @click.prevent="tips">点我提示信息</a>
+
+    <!-- 阻止事件冒泡 -->
+    <div class="demo1" @click="tips">
+      <a href="https://www.jd.com" @click.stop="tips">点我提示信息</a>
+    </div>
+
+    <!-- 事件只触发一次 -->
+    <button @click.once="tips">点我提示信息</button>
+
+
+  </div>
+
+  <script>
+    Vue.config.productionTip = false
+
+    const vm = new Vue({
+      el: '#root',
+      data: {
+        name: '武汉大学'
+      },
+      methods: {
+        tips(e) {
+          alert("同学你好")
+        }
+      },
+    })
+  </script>
+</body>
+</html>

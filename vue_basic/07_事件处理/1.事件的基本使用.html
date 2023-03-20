@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>1.事件的基本使用</title>
+  <script src="../js/vue.js"></script>
+</head>
+<body>
+  <!-- 
+    事件的基本使用：
+      1. 使用 v-on:xxx 或 @xxx 绑定事件，其中 xxx 是事件名
+      2. 事件的回调需要配置在 methods 对象中，最终会在 vm 上
+      3. methods 中配置的函数，不要用箭头函数，否则 this 的指向就不是 vm
+      4. methods 中配置的函数，都是被 Vue 所管理的函数，this 的指向是 vm 或 组件实例对象
+      5. @click="demo" 和 @click="demo($event)" 效果一样，但后者可以传参
+   -->
+
+  <div id="root">
+    <h1>欢迎来到{{name}}学习</h1>
+    <button @click="tips">点我提示信息</button>
+    <button @click="tips2(1)">点我提示信息</button>
+  </div>
+
+  <script>
+    Vue.config.productionTip = false
+
+    const vm = new Vue({
+      el: '#root',
+      data: {
+        name: '武汉大学'
+      },
+      methods: {
+        tips() {
+          alert('🐂B')
+        },
+        tips2(number) {
+          alert(number)
+        }
+      },
+    })
+  </script>
+</body>
+</html>

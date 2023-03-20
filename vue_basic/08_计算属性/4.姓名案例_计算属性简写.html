@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>计算属性简写</title>
+  <script src="../js/vue.js"></script>
+</head>
+<body>
+  <div id="root">
+      姓：<input type="text" v-model="firstname">
+      <br>
+      <br>
+      名：<input type="text" v-model="lastname">
+      <br>
+      <br>
+      全名：<span>{{fullName}}</span>
+  </div>
+
+  <script>
+    Vue.config.productionTip = false
+
+    new Vue({
+      el: '#root',
+      data:{
+        firstname: '张',
+        lastname: '三'
+      },
+      computed: {
+        // 完整写法
+        /* fullName:{
+          // 当有人读取 fullName 时，get 就会被调用，返回值作为 fullName 的值
+          // get 什么时候调用？ 1. 初次读取 fullName 时 2.所依赖的数据发生变化时。
+          get() {
+            return this.firstname + '-' + this.lastname
+          }
+        } */
+
+        // 简写
+        fullName() {
+          return this.firstname + '-' + this.lastname
+        }
+      },
+    })
+  </script>
+</body>
+</html>
