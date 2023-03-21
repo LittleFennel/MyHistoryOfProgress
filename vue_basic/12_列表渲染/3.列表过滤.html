@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>列表过滤</title>
+  <script src="../js/vue.js"></script>
+</head>
+<body>
+  <!-- 
+    
+   -->
+
+  <div id="root">
+    <h2>人员列表</h2>
+    <input type="text" placeholder="请输入名字" v-model="input">
+    <ul>
+      <li v-for="(person, index) in filterPersons" :key="person.id">
+        {{person.name}}-{{person.age}}-{{person.gender}}
+      </li>
+    </ul>
+  </div>
+
+  <script>
+  Vue.config.productionTip = false
+
+    new Vue({
+      el:"#root",
+      data:{
+        input: '',
+        personArr:[
+          {id: '001', name: '马冬梅', age: 18, gender: '女'},
+          {id: '002', name: '周冬雨', age: 19, gender: '女'},
+          {id: '003', name: '周杰伦', age: 20, gender: '男'},
+          {id: '004', name: '温兆伦', age: 20, gender: '男'}
+        ]
+      },
+      // 使用监视属性实现列表过滤
+      /* watch: {
+        input:{
+          immediate: true,
+          handler(val) {
+            this.filterPersons = this.personArr.filter((p) => {
+              return p.name.indexOf(val) !== -1
+            })
+          }
+        }
+      }, */
+      // 使用计算属性实现
+      computed: {
+        filterPersons() {
+          return this.personArr.filter((p) => {
+            return p.name.indexOf(this.input) !== -1
+          })
+        }
+      },
+    })
+  </script>
+</body>
+</html>

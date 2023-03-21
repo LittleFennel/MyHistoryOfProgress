@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>key的原理</title>
+  <script src="../js/vue.js"></script>
+</head>
+<body>
+  <!-- 
+    面试题：React、Vue 中的 key 有什么作用？（key 内部的原理）
+
+      1. 虚拟 DOM 中 key 的作用
+         key 是虚拟 DOM 对象的标识，当状态中的数据发生变化时，Vue 会根据新数据生成新的虚拟DOM
+         随后 Vue 进行新虚拟 DOM 和旧虚拟 DOM 的差异对比，比较规则如下
+          （1）旧虚拟 DOM 中内容没变，直接使用之前的真实 DOM
+          （2）若虚拟 DOM 中内容变了，则生成新的真实 DOM，随后替换掉页面中之前的真实 DOM
+          （3）旧虚拟 DOM 中未找到与新虚拟 DOM 相同的 key，则创建新的真实 DOM，随后渲染到页面
+      
+      2. 用 index 作为 key 可能会引发的问题
+          （1）若对数据进行逆序添加、逆序删除等破坏顺序操作，则会产生没有必要的真实 DOM 更新 ===> 界面效果没问题，但效率低
+          （2）如果结构中还包含输入类的 DOM，会产生错误 DOM 更新 ===> 界面有问题 
+
+      3. 开发中如何选择 key？
+          （1）最好使用每条数据的唯一标识作为 key，比如 id、手机号、身份证号、学号等作为唯一值
+          （2）如果不存在对数据的逆序添加、逆序删除等破坏顺序的操作，仅用于渲染列表用于展示就可以使用 index 作为 key
+   -->
+
+  <div id="root">
+    <!-- 遍历数组 -->
+    <h2>人员列表</h2>
+    <button @click.once="addLaoliu">添加一个老刘</button>
+    <ul>
+      <li v-for="(person, index) in personArr" :key="person.id">
+        {{person.name}}-{{person.age}}
+        <input type="text">
+      </li>
+    </ul>
+  </div>
+
+  <script>
+  Vue.config.productionTip = false
+
+    new Vue({
+      el:"#root",
+      data:{
+        personArr:[
+          {id: '001', name: '张三', age: 18},
+          {id: '002', name: '李四', age: 19},
+          {id: '003', name: '王五', age: 20}
+        ]
+      },
+      methods: {
+        addLaoliu() {
+          const person = {id:'004', name: '老刘', age: 40}
+          this.personArr.unshift(person)
+        }
+      },
+    })
+  </script>
+</body>
+</html>
