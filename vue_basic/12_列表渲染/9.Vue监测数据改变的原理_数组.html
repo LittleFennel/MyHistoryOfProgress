@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vue监测数据改变的原理_数组</title>
+  <!-- 引入Vue -->
+  <script src="../js/vue.js"></script>
+</head>
+<body>
+  <!-- 
+    
+   -->
+   
+  <div id="root">
+    <h1>学校信息</h1>
+    <h1>学校名称：{{name}}</h1>
+    <h1>学校地址：{{addr}}</h1>
+    <hr>
+    <h1>学生信息</h1>
+    <button @click="addGender">添加一个性别属性，默认值是男</button>
+    <button @click="changeGender">改变一个性别为女性</button>
+    <h2>姓名:{{student.name}}</h2>
+    <h2>年龄:{{student.age.realAge}}, 对外{{student.age.speakAge}}</h2>
+    <h2 v-if="student.gender">性别:{{student.gender}}</h2>
+    <h2>女朋友列表</h2>
+    <ul >
+      <li v-for="(gf, index) in student.grilFriends" :key="index">{{gf.name}}-{{gf.age}}</li>
+    </ul>
+    <h2>爱好</h2>
+    <ul >
+      <li v-for="(h, index) in student.hobby" :key="index">{{h}}</li>
+    </ul>
+  </div>
+
+  <script type="text/javascript">
+    Vue.config.productionTip = false
+
+    // 创建 Vue 实例
+    const vm = new Vue({
+      el:'#root', 
+      data:{ 
+        name: '武汉大学',
+        addr: '珞珈山',
+        student: {
+          name: '熊昆',
+          age: {
+            realAge: 24,
+            speakAge: 20
+          },
+          hobby: ['操李奕诺', '操吴佳仪', '操王丹妮'],
+          grilFriends: [
+            {name: '李奕诺', age: 24},
+            {name: '吴佳仪', age: 24}
+          ]
+        }
+      },
+      methods: {
+        addGender() {
+          // Vue.set(this.student, 'gender', '男')
+          this.$set(this.student, 'gender', '男')
+        },
+        changeGender() {
+          this.student.gender = '女'
+        }
+      },
+    })
+  </script>
+</body>
+</html>

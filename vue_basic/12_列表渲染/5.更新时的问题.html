@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>更新时的问题</title>
+  <script src="../js/vue.js"></script>
+</head>
+<body>
+  <!-- 
+    
+   -->
+
+  <div id="root">
+    <h2>人员列表</h2>
+    <button @click="changeMei">点我更新马冬梅</button>
+    <ul>
+      <li v-for="(person, index) in personArr" :key="person.id">
+        {{person.name}}-{{person.age}}-{{person.gender}}
+      </li>
+    </ul>
+  </div>
+
+  <script>
+  Vue.config.productionTip = false
+
+    const vm = new Vue({
+      el:"#root",
+      data:{
+        input: '',
+        sortType: 0, //0：原顺序，1：升序，2：降序
+        personArr:[
+          {id: '001', name: '马冬梅', age: 30, gender: '女'},
+          {id: '002', name: '周冬雨', age: 31, gender: '女'},
+          {id: '003', name: '周杰伦', age: 18, gender: '男'},
+          {id: '004', name: '温兆伦', age: 19, gender: '男'}
+        ]
+      },
+      methods: {
+        changeMei() {
+          // 有效修改
+          /* this.personArr[0].name = '马老师'
+          this.personArr[0].age = 50
+          this.personArr[0].gender = '男' */
+
+          this.personArr[0] = {id: '001', name: '马老师', age: 50, gender: '男'}
+        }
+      },
+    })
+  </script>
+</body>
+</html>

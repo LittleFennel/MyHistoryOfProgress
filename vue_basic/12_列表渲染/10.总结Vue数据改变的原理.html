@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>总结Vue数据改变的原理</title>
+  <!-- 引入Vue -->
+  <script src="../js/vue.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+<body>
+  <!-- 
+    Vue 监测数据的原理：
+      1. Vue 会监测 data 中所有层次的数据
+      2. 如何监测对象中的数据？
+        通过 setter 实现监视，且要在 new Vue 时就传入要监测的数据
+          （1）对象中后追加的属性， Vue 默认不做响应式处理
+          （2）如需给后添加的属性做响应式，应使用以下 API
+            Vue.set(target.propertyName/index, value) 或
+            vm.$set(target.propertyName/index, value)
+      3. 如何监测数组中的数据？
+        通过包裹数组更新元素的方法实现，本质就是做了两件事
+          （1）通过调用原生对应的方法对数据进行更新
+          （2）通过解析模板，进而更新页面
+      4. 在 Vue 修改数组中某个元素一定要使用如下方法
+        （1）使用这些 API：push()、shift()、unshift()、splice()、sort()、reverse()
+        （2）Vue.set() 或 vm.$set()
+      特别注意：Vue.set() 和 vm.$set() 不能给 vm 或 vm 的根数据对象添加属性
+   -->
+   
+  <div id="root">
+    <h1 style="background-color: #409EFF;">学生信息</h1>
+    <el-button type="primary" round @click="student.age++">年龄加一岁</el-button>
+    <el-button type="primary" round @click="addGender">添加一个性别属性，默认值是男</el-button>
+    <el-button type="primary" round @click="student.gender = '未知'">修改一个性别</el-button>
+    <el-button type="primary" round @click="addFriend">在列表首位添加一个女朋友</el-button>
+    <el-button type="primary" round @click="updateFirstFirendName">修改第一个朋友的名字叫邹佳怡</el-button>
+    <el-button type="primary" round @click="addHobby">添加一个爱好</el-button>
+    <el-button type="primary" round @click="changeThirdHobby">修改第三个爱好为开车</el-button>
+    <el-button type="primary" round @click="removeSmoke">过滤掉不想要的爱好</el-button>
+
+    <h2 style="background-color: #409EFF;">姓名:{{student.name}}</h2>
+    <h2 style="background-color: #409EFF;">年龄:{{student.age}}</h2>
+    <h2 style="background-color: #409EFF;" v-if="student.gender">性别:{{student.gender}}</h2>
+    <h2 style="background-color: #409EFF;">爱好</h2>
+    <ul >
+      <li v-for="(h, index) in student.hobby" :key="index">{{h}}</li>
+    </ul>
+    <h1 style="background-color: #409EFF;">女朋友列表</h2>
+    <ul >
+      <li v-for="(gf, index) in student.grilFriends" :key="index">{{gf.name}}-{{gf.age}}</li>
+    </ul>
+  </div>
+
+  <script type="text/javascript">
+    Vue.config.productionTip = false
+
+    // 创建 Vue 实例
+    const vm = new Vue({
+      el:'#root', 
+      data:{ 
+        student: {
+          name: 'HayashiSama',
+          age: 24,
+          hobby: ['抽烟', '喝酒', '烫头'],
+          grilFriends: [
+            {id: 001, name: '李奕诺', age: 24},
+            {id: 002, name: '吴佳仪', age: 24}
+          ]
+        }
+      },
+      methods: {
+        addGender() {
+          // Vue.set(this.student, 'gender', '男')
+          vm.$set(this.student, 'gender', '男')
+        },
+        addFriend() {
+          this.student.grilFriends.unshift({id: 003, name: '王丹妮', age: 24})
+        },
+        updateFirstFirendName() {
+          this.student.grilFriends[0].name = '邹佳怡'
+        },
+        addHobby() {
+          this.student.hobby.push('开车')
+        },
+        changeThirdHobby() {
+          // this.student.hobby.splice(3, 1, '开车')
+          // Vue.set(this.student.hobby, 3, '开车')
+          this.$set(this.student.hobby, 2, '开车')
+        },
+        removeSmoke() {
+          this.student.hobby = this.student.hobby.filter((h) => {
+            return h !== '抽烟'
+          })
+        }
+      },
+    })
+  </script>
+</body>
+</html>
