@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>过滤器</title>
+  <script src="../js/vue.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script src="../js/dayjs.min.js"></script>
+</head>
+<body>
+  <!-- 
+    
+   -->
+
+  <div id="root">
+    <h2>显示格式化后的时间</h2>
+    <!-- 计算属性实现 -->
+    <h2>现在是:{{fmtTime}}</h2>
+    <!-- methods 实现 -->
+    <h2>现在是:{{getFmtTime()}}</h2>
+    <!-- 过滤器实现 -->
+    <h2>现在是:{{time | timeFormatter}}</h2>
+  </div>
+
+  <script>
+    Vue.config.productionTip = false
+    // 全局过滤器
+    Vue.filter('mySlice', function (value) {
+      return value.slice(0, 4)
+    })
+
+    new Vue({
+      el:"#root",
+      data:{
+        time:'1679579979638'
+      },
+      computed: {
+        fmtTime() {
+          return dayjs(this.time).format('YYYY-MM-DD HH:mm:ss')
+        }
+      },
+      methods: {
+        getFmtTime() {
+          return dayjs(this.time).format('YYYY-MM-DD HH:mm:ss')
+        }
+      },
+      filters: {
+        timeFormatter(value) {
+          return dayjs(this.time).format('YYYY-MM-DD HH:mm:ss')
+        }
+      }
+    })
+  </script>
+</body>
+</html>
