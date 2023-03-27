@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>组件的嵌套</title>
+  <script src="../js/vue.js"></script>
+</head>
+<body>
+  <div id="root">
+    <school></school>
+  </div>
+</body>
+
+<script>
+  
+  Vue.config.productionTip = false
+
+  // 定义 hello 组件
+  const hello = Vue.extend({
+    template:`
+      <div>
+        <h1>{{msg}}</h2>
+      </div>
+    `,
+    data() {
+      return {
+        msg: '欢迎来到武汉大学学习！'
+      }
+    }
+  })
+
+  // 定义 student 组件
+  const student = Vue.extend({
+    template:`
+      <div>
+        <hello></hello>
+        <h2>学生姓名：{{studentName}}</h2>
+        <h2>学生年龄：{{studentAge}}</h2>
+      </div>
+    `,
+    data() {
+      return {
+        studentName: '熊昆',
+        studentAge: 24
+      }
+    },
+    components: {
+      hello
+    }
+  })
+
+  // 定义 school 组件
+  const school = Vue.extend({
+    template:`
+      <div>
+        <h2>学校名称：{{schoolName}}</h2>
+        <h2>学校地址：{{schoolAddr}}</h2>
+        <button @click="showName">点我提示学校名</button>
+        <student></student>
+      </div>
+    `,
+    data() {
+      return {
+        schoolName: '武汉大学',
+        schoolAddr: '湖北省武汉市珞珈山'
+      }
+    },
+    methods: {
+      showName() {
+        alert(this.schoolName)
+      }
+    },
+    components: {
+      student
+    }
+  })
+
+  new Vue({
+    el:"#root",
+    data: {
+      msg: '欢迎来到武汉大学'
+    },
+    // 注册组件（局部）
+    components: {
+      school
+    }
+  })
+</script>
+</html>
