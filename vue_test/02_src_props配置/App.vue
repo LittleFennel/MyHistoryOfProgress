@@ -1,14 +1,11 @@
 <template>
   <div id="app">
-    <School/>
-    <hr>
-    <Student/>
+    <Student name="张三" :age="24" gender="男"/>
   </div>
 </template>
 
 <script>
 import Student from "./components/Student.vue";
-import School from "./components/School.vue";
 
 export default {
   name: 'App',
@@ -17,6 +14,6 @@ export default {
       msg: '欢迎来到武汉大学学习！'
     }
   },
-  components:{Student, School}
+  components:{Student}
 }
 </script>
