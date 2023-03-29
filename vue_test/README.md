@@ -2,6 +2,7 @@
   1. 被用来给元素或子组件注册引用信息（id 的替代者）
   2. 应用在 html 标签上获取的是真实的 DOM 元素，应用在组件标签上是组件实例对象（vc）
   3. 使用方式
+
     打标识：<h1 ref="xxx">....</h1> 或 <School ref="xxx"></School>
     获取：this.$refs.xxx
 
@@ -49,12 +50,72 @@
 
       // 2. 添加全局指令
       Vue.directive(...)
-
+    
       // 3. 配置全局混入(合)
       Vue.mixin(xxx)
-
+    
       // 4. 添加实例方法
       Vue.prototype.$myMethod = function() {...}
       Vue.prototype.$myProperty = xxx
     }
     使用插件：Vue.use()
+
+# 总结 TodoList 案例
+  1. 组件化编码流程：
+
+    （1）拆分静态组件：组件要按功能点拆分，命名不要与 HTML 元素冲突
+    （2）实现动态组件：考虑好数据存放的位置、数据是一个组件在用还是一些组件在用
+      - 一个组件在用：放在组件自身即可
+      - 一些组件在用：放在他们共同的父组件上（状态提升）
+    （3）实现交互：从绑定事件开始
+  2. props 适用于
+
+    （1）父组件 ==> 子组件 通信
+    （2）子组件 ==> 父组件 通信（要求父先给与一个函数）
+  3. 使用 v-model 时要切记：v-model 绑定的值不能是 props 传递的值，因为 props 是不可以修改的
+  4. props 传过来的若是对象类型的值，修改对象中的属性时 Vue 不会报错，但不推荐这么做
+
+# 全局事件总线
+  1. 一种组件间的通信方式，适用于任意组件间通信
+  2. 在 main.js 文件中安装全局事件总线
+
+	```js
+	new Vue({
+	  render: h => h(App),
+	  // 安装全局事件总线
+	  beforeCreate() {
+	  Vue.prototype.$bus = this
+	  }
+	}).$mount('#app')
+	```
+
+	
+
+3. 使用事件总线：
+
+	1. 接收数据：A 组件想接收数据，则在 A 组件中给 $bus 绑定自定义事件，事件的回调留在A 组件自身
+
+		```js
+		methods: {
+		    demo(data) {...}
+		},
+		... ,
+		mounted() {
+			this.$bus.$on('sendStudentName', (data) => {
+		      console.log('School组件收到了数据', data);
+		    })
+		},
+		```
+
+	2. 提供数据：`this.$bus.$emit('xxx', data)`
+
+	3. 最好在`beforeDestroy`钩子中，用`$off`去解绑当前组件所用到的事件
+
+		```js
+		beforeDestroy() {
+		    this.$bus.$off('sendStudentName')
+		  }
+		```
+
+		
+

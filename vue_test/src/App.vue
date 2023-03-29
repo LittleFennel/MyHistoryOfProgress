@@ -1,22 +1,16 @@
 <template>
   <div id="app">
-    <School/>
-    <hr>
-    <Student/>
+    <button @click="getStudents">获取学生信息</button>
   </div>
 </template>
-
 <script>
-import Student from "./components/Student.vue";
-import School from "./components/School.vue";
-
+import axios from 'axios'
 export default {
   name: 'App',
-  data() {
-    return {
-      msg: '欢迎来到武汉大学学习！'
+  methods: {
+    getStudents() {
+      axios.get('')
     }
   },
-  components:{Student, School}
 }
 </script>
