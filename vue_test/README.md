@@ -117,5 +117,56 @@
 		  }
 		```
 
-		
+# 消息订阅与发布（pubsub）
 
+1. 一种组件间的通信方式，适用于任意组件间通信
+
+2. 使用步骤：
+
+	1. 安装pubsub：`npm i pubsub-js`
+
+	2. 引入：`import pubsub from 'pubsub-js'`
+
+	3. 接收数据：A 组件想接收数据，则在 A 组件中订阅消息，订阅的回调留在 A 自身
+
+		```js
+		methods: {
+			demo(msgName, data) {...},
+		    mounted() {
+				this.pubID = pubsub.subscribe('xxx', this.demo) // 订阅消息
+			},
+		}
+		```
+
+	4. 提供数据：`pubsub.publish('xxx', 数据)`
+
+	5. 最好在`beforeDestroy`钩子中，用`pubsub.unsubscribe(pubID)`去`<span style="color:red">取消订阅</span>`
+
+# 过渡与动画
+
+1. 作用：在插入、更新或移除 DOM 元素时，在合适的时候给元素添加样式类名
+
+2. 写法：
+
+	1. 准备好样式：
+
+		- 元素进入的样式
+			1. v-enter：进入的起点
+			2. v-enter-active：进入过程中
+			3. v-enter-to：进入的终点
+		- 元素离开的样式
+			1. v-leave：离开的起点
+			2. v-leave-active：离开过程中
+			3. v-leave-to：离开的终点
+
+	2. 用 `<transition>`标签包裹要过渡的元素，并配置 name 属性
+
+		```html
+		<transition name="hello" appear>
+			<h1 v-show="isShow">你好啊</h1>
+		</transition>
+		```
+
+	3. 备注：若有多个元素需要过渡，则需要使用`<transition-group>`，且每个元素都要指定 key 值
+
+​	
