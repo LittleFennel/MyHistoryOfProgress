@@ -1,0 +1,18 @@
+server:
+  port: 8886
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/managerDB?serverTimezone=GMT%2d8
+    username: root
+    password: 887602
+  redis:
+    port: 6379
+    host: 192.168.93.100
+    password: 887602
+
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
