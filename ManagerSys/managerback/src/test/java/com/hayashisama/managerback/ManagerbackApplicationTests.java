@@ -15,11 +15,22 @@ import java.util.List;
 @MapperScan("com.baomidou.mybatisplus.samples.quickstart.mapper")
 class ManagerbackApplicationTests {
     @Autowired
+    private RedisTemplate redisTemplate;
+    @Autowired
     private UserMapper userMapper;
 
     @Test
     public void testString() {
-        List<User> users = userMapper.selectList(null);
-        users.forEach(System.out::println);
+        // redisTemplate.opsForValue().set("name", "熊昆");
+
+        Object name = redisTemplate.opsForValue().get("user:d415c4a6-f24a-4d3a-a1df-6426463eed7b");
+
+        System.out.println("name: " + name);
+    }
+
+    @Test
+    public void testUserMapper() {
+        List<User> userList = userMapper.selectList(null);
+        userList.forEach(System.out::println);
     }
 }

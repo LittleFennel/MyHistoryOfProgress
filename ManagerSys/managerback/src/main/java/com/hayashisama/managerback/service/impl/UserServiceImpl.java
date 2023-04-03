@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hayashisama.managerback.entity.User;
 import com.hayashisama.managerback.mapper.UserMapper;
 import com.hayashisama.managerback.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ import static com.hayashisama.common.constNumer.redisTime.USER_LOGIN_OUTTIME;
  * @Version 1.0
  **/
 @Service
+@Slf4j
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     @Autowired
@@ -44,6 +46,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             // 存入 redis
             loginUser.setPassword(null);
             redisTemplate.opsForValue().set(key, loginUser, USER_LOGIN_OUTTIME, TimeUnit.MINUTES);
+            log.info("login方法输出的key值" + key);
             // 返回数据
             Map<String, Object> data = new HashMap<>();
             data.put("Token", key);
