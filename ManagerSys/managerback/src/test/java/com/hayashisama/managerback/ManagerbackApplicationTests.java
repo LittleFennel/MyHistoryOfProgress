@@ -18,12 +18,17 @@ class ManagerbackApplicationTests {
     private RedisTemplate redisTemplate;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private UserService userService;
 
     @Test
     public void testString() {
-        // redisTemplate.opsForValue().set("name", "熊昆");
+        String key = "username";
+        String value = "李奕诺";
 
-        Object name = redisTemplate.opsForValue().get("user:d415c4a6-f24a-4d3a-a1df-6426463eed7b");
+        redisTemplate.opsForValue().set(key, value);
+
+        Object name = redisTemplate.opsForValue().get("username");
 
         System.out.println("name: " + name);
     }
@@ -31,6 +36,12 @@ class ManagerbackApplicationTests {
     @Test
     public void testUserMapper() {
         List<User> userList = userMapper.selectList(null);
+        userList.forEach(System.out::println);
+    }
+
+    @Test
+    public void getUserList() {
+        List<User> userList = userService.getUserList();
         userList.forEach(System.out::println);
     }
 }

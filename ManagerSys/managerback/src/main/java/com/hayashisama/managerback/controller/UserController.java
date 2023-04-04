@@ -42,4 +42,14 @@ public class UserController {
         return Result.fail(reqStatus.FAIL_ERROR_PARAMS, "用户名或密码错误！");
     }
 
+    @GetMapping("/info")
+    public Result<Map<String, Object>> getUserInfo(@RequestParam("token") String token) {
+        // 根据 token 获取用户信息
+        Map<String, Object> data = userService.getUserInfo(token);
+        if (data != null) {
+            return Result.success(data);
+        }
+        return Result.fail(reqStatus.FAIL_NONEXISTENT_USER, "登录信息无效，请重新登录！");
+    }
+
 }

@@ -1,24 +1,14 @@
 package com.hayashisama.common.config;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializer;
 
-import javax.annotation.Resource;
-import java.text.SimpleDateFormat;
-import java.util.TimeZone;
+import java.net.UnknownHostException;
 
 /**
  * @program: managerback
@@ -32,28 +22,17 @@ import java.util.TimeZone;
 @Configuration
 public class MyRedisConfig{
 
-    @Resource
-    private RedisConnectionFactory factory;
-
     @Bean
-    public RedisTemplate redisTemplate() {
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) throws UnknownHostException {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(factory);
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        // 配置连接工厂
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
+        GenericJackson2JsonRedisSerializer jsonRedisSerializer = new GenericJackson2JsonRedisSerializer();
 
-        Jackson2JsonRedisSerializer serializer = new Jackson2JsonRedisSerializer<>(Object.class);
-        redisTemplate.setValueSerializer(serializer);
-
-        ObjectMapper om = new ObjectMapper();
-        om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        om.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
-        om.setTimeZone(TimeZone.getDefault());
-        om.configure(MapperFeature.USE_ANNOTATIONS, false);
-        om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        om.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-        om.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
-        om.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        serializer.setObjectMapper(om);
+        redisTemplate.setKeySerializer(RedisSerializer.string());
+        redisTemplate.setHashValueSerializer(RedisSerializer.string());
+        redisTemplate.setValueSerializer(jsonRedisSerializer);
+        redisTemplate.setHashValueSerializer(jsonRedisSerializer);
         return redisTemplate;
     }
 }
